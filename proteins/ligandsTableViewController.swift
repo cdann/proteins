@@ -8,10 +8,12 @@
 
 import UIKit
 
-class ligandsTableViewController: UITableViewController {
+class ligandsTableViewController: UITableViewController, UISearchResultsUpdating {
     var ligand_list: [String]?
+    var ligand_list_filter = [String]()
     var atoms = [Int: AtomData]()
     var conects = [Int: ConectData]()
+    let searchController = UISearchController(searchResultsController: nil)
     
     func arrayFromContentsOfFileWithName(fileName: String) -> [String]? {
         guard let path = NSBundle.mainBundle().pathForResource(fileName, ofType: "txt") else {
@@ -26,15 +28,33 @@ class ligandsTableViewController: UITableViewController {
         }
     }
 
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        searchFilterLigand(searchController.searchBar.text!)
+    }
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         ligand_list = arrayFromContentsOfFileWithName("ligands")
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+         definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        
         print("*")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    func searchFilterLigand(searchText: String, scope: String = "All") {
+        ligand_list_filter = ligand_list!.filter { lig in
+            return lig.lowercaseString.containsString(searchText.lowercaseString)
+        }
+        
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,15 +70,26 @@ class ligandsTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        if searchController.active && searchController.searchBar.text != "" {
+            return ligand_list_filter.count        }
         return ligand_list!.count
+        // #warning Incomplete implementation, return the number of rows
+        
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ligandCell", forIndexPath: indexPath)
+        
+        
         cell.textLabel?.text = ligand_list![indexPath.row]
-
+        if searchController.active && searchController.searchBar.text != "" {
+            cell.textLabel?.text = ligand_list_filter[indexPath.row]
+        }
+        else {
+            cell.textLabel?.text = ligand_list![indexPath.row]
+        }
+            
         // Configure the cell...
 
         return cell
@@ -109,22 +140,20 @@ class ligandsTableViewController: UITableViewController {
         let parturl = "http://ligand-expo.rcsb.org/reports/\(lig!.characters.first!)/\(lig!)/\(lig!)_ideal.pdb"
         let url = NSURL(string: parturl)
         do {
+            print (parturl)
             let file =  try String(contentsOfURL: url!, encoding:NSUTF8StringEncoding)
             let lines = file.componentsSeparatedByString("\n")
             for line in lines {
-                if treatLine(line) == false {
+                if self.treatLine(line) == false {
                     print("error " + String(line))
                     return
                 }
             }
-            performSegueWithIdentifier("toVisu", sender: self)
-            
+            self.performSegueWithIdentifier("toVisu", sender: self)
         }
         catch {
             print("error")
         }
-        
-
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
