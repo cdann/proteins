@@ -88,10 +88,22 @@ extension SCNVector3 {
     }
     
     public static func distance(left:SCNVector3, right:SCNVector3) -> Float {
-        let xdiff = pow(left.x - right.x, 2)
-        let ydiff = pow(left.y - right.x, 2)
-        let zdiff = pow(left.z - right.z, 2)
-        let result = sqrtf(xdiff + ydiff + zdiff)
+        //print("------calcul-----")
+        //print("start \(left)  \(right)")
+        var xdiff = left.x - right.x
+        var ydiff = left.y - right.y
+        var zdiff = left.z - right.z
+        //print("diffs \(xdiff)  \(ydiff)  \(zdiff)")
+        
+        
+        xdiff = powf(xdiff, 2)
+        ydiff = powf(ydiff, 2)
+        zdiff = powf(zdiff, 2)
+        //print("carre \(xdiff)  \(ydiff)  \(zdiff)")
+        let sum = xdiff + ydiff + zdiff
+        //print("sum \(sum)")
+        let result = sqrtf(sum)
+        //print("\(result) ----------------------")
         return result
     }
     
