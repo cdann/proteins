@@ -32,12 +32,6 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         searchFilterLigand(searchController.searchBar.text!)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-    }
-    
     func testForeground() {
         print("youhou")
     }
