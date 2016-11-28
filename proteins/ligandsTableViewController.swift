@@ -15,20 +15,20 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     var conects = [Int: ConectData]()
     let searchController = UISearchController(searchResultsController: nil)
     
-    func arrayFromContentsOfFileWithName(fileName: String) -> [String]? {
-        guard let path = NSBundle.mainBundle().pathForResource(fileName, ofType: "txt") else {
+    func arrayFromContentsOfFileWithName(_ fileName: String) -> [String]? {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: "txt") else {
             return nil
         }
         
         do {
-            let content = try String(contentsOfFile:path, encoding: NSUTF8StringEncoding)
-            return content.componentsSeparatedByString("\n")
+            let content = try String(contentsOfFile:path, encoding: String.Encoding.utf8)
+            return content.components(separatedBy: "\n")
         } catch _ as NSError {
             return nil
         }
     }
 
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         searchFilterLigand(searchController.searchBar.text!)
     }
     
@@ -49,9 +49,9 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    func searchFilterLigand(searchText: String, scope: String = "All") {
+    func searchFilterLigand(_ searchText: String, scope: String = "All") {
         ligand_list_filter = ligand_list!.filter { lig in
-            return lig.lowercaseString.containsString(searchText.lowercaseString)
+            return lig.lowercased().contains(searchText.lowercased())
         }
         
         tableView.reloadData()
@@ -64,13 +64,13 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive && searchController.searchBar.text != "" {
             return ligand_list_filter.count        }
         return ligand_list!.count
         // #warning Incomplete implementation, return the number of rows
@@ -78,12 +78,12 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ligandCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCell", for: indexPath)
         
         
         cell.textLabel?.text = ligand_list![indexPath.row]
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.isActive && searchController.searchBar.text != "" {
             cell.textLabel?.text = ligand_list_filter[indexPath.row]
         }
         else {
@@ -95,9 +95,9 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         return cell
     }
     
-    func treatLine(line:String) -> Bool {
-        var words = line.componentsSeparatedByString(" ")
-        words = words.filter { !($0 ?? "").isEmpty }
+    func treatLine(_ line:String) -> Bool {
+        var words = line.components(separatedBy: " ")
+        words = words.filter { !($0 ).isEmpty }
         if words.isEmpty || words[0] == "END" {
             return true
         }
@@ -111,8 +111,8 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         }
         else if words[0] == "CONECT" {
             let main = words[1]
-            words.removeAtIndex(1)
-            words.removeAtIndex(0)
+            words.remove(at: 1)
+            words.remove(at: 0)
             guard let c = ConectData(main:main, connects: words)  else{
                 print("error in atom construction")
                 return false
@@ -124,7 +124,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let lig = ligand_list?[indexPath.row]
         print(lig!)
         
@@ -138,26 +138,26 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         }
         performSegueWithIdentifier("toVisu", sender: self)*/
         let parturl = "http://ligand-expo.rcsb.org/reports/\(lig!.characters.first!)/\(lig!)/\(lig!)_ideal.pdb"
-        let url = NSURL(string: parturl)
+        let url = URL(string: parturl)
         do {
             print (parturl)
-            let file =  try String(contentsOfURL: url!, encoding:NSUTF8StringEncoding)
-            let lines = file.componentsSeparatedByString("\n")
+            let file =  try String(contentsOf: url!, encoding:String.Encoding.utf8)
+            let lines = file.components(separatedBy: "\n")
             for line in lines {
                 if self.treatLine(line) == false {
                     print("error " + String(line))
                     return
                 }
             }
-            self.performSegueWithIdentifier("toVisu", sender: self)
+            self.performSegue(withIdentifier: "toVisu", sender: self)
         }
         catch {
             print("error")
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let ctrl = segue.destinationViewController as? ModelizationViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let ctrl = segue.destination as? ModelizationViewController {
             ctrl.atoms = self.atoms
             ctrl.conects = self.conects
         }

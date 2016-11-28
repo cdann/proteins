@@ -38,28 +38,28 @@ extension UIColor {
         return UIColor(red: 213/255, green: 99/255, blue: 0, alpha: 1.0)
     }
     
-    public static func getCPKColor(elem:String) -> UIColor{
+    public static func getCPKColor(_ elem:String) -> UIColor{
         switch elem {
         case "H":
-            return UIColor.whiteColor()
+            return UIColor.white
         case "C":
-            return UIColor.darkGrayColor()
+            return UIColor.darkGray
         case "N":
-            return UIColor.blueColor()
+            return UIColor.blue
         case "O":
-            return UIColor.redColor()
+            return UIColor.red
         case "F", "Cl":
-            return UIColor.greenColor()
+            return UIColor.green
         case "Br":
             return UIColor.brickColor()
         case "I":
-            return UIColor.purpleColor()
+            return UIColor.purple
         case "He", "Ne", "Ar", "Xe", "Kr":
-            return UIColor.cyanColor()
+            return UIColor.cyan
         case "P":
-            return UIColor.orangeColor()
+            return UIColor.orange
         case "S":
-            return UIColor.yellowColor()
+            return UIColor.yellow
         case "B":
             return UIColor.salmonColor()
         case "Li", "Na", "K", "Rb", "Cs", "Fr":
@@ -87,7 +87,7 @@ extension SCNVector3 {
         return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))
     }
     
-    public static func distance(left:SCNVector3, right:SCNVector3) -> Float {
+    public static func distance(_ left:SCNVector3, right:SCNVector3) -> Float {
         //print("------calcul-----")
         //print("start \(left)  \(right)")
         var xdiff = left.x - right.x
@@ -107,14 +107,14 @@ extension SCNVector3 {
         return result
     }
     
-    public static func crossProduct(left:SCNVector3, right:SCNVector3) -> SCNVector3 {
+    public static func crossProduct(_ left:SCNVector3, right:SCNVector3) -> SCNVector3 {
         let x = left.y * right.z - right.y * left.z
         let y = left.z * right.x - right.z * left.x
         let z = left.x * right.y - right.x * left.y
         return SCNVector3(x, y, z)
     }
     
-    public static func dotProduct(left:SCNVector3, right:SCNVector3) -> Float {
+    public static func dotProduct(_ left:SCNVector3, right:SCNVector3) -> Float {
         return right.x * left.x + right.y * left.y + right.z * left.z
     }
     
