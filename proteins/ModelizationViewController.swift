@@ -28,11 +28,22 @@ class ModelizationViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupScene()
+        let text = "mon text"
+        let newText = SCNText(string: text, extrusionDepth:0.1)
+        newText.font = UIFont (name: "Arial", size: 3)
+        newText.firstMaterial!.diffuse.contents = UIColor.white
+        newText.firstMaterial!.specular.contents = UIColor.white
+        
         for (_, at) in atoms {
             displayAtom(at)
             getMinMax(at)
         }
+        
         setupCamera()
+        let textNode = SCNNode(geometry: newText)
+        //textNode.constraints = SCNLookAtConstraint
+        textNode.position = SCNVector3(x:xminmax!.0, y:yminmax!.1, z: zminmax!.1+10)
+        scnScene.rootNode.addChildNode(textNode)
         for (_,co) in conects {
             displayConect(co)
             return //a enlever
@@ -116,7 +127,7 @@ class ModelizationViewController: UIViewController {
     
     func displayConect(_ conect:ConectData) {
         let pointa = atoms[conect.mainAtomKey]!.pos
-        print(atoms)
+        //print(atoms)
 //        print("______")
         for conection in conect.conections {
             let pointb = atoms[conection]!.pos
@@ -150,11 +161,11 @@ class ModelizationViewController: UIViewController {
             //angle = (Float(M_PI) *  acos(angle))/180
             
             //let axis = SCNVector3.crossProduct(norma, right: normb).normalize()
-            print("axis " + String(describing: axis) + " angle " + String(angle))
+            //print("axis " + String(describing: axis) + " angle " + String(angle))
             let geometry = SCNCylinder(radius: 0.2, height: height)
             geometry.materials.first?.diffuse.contents = atoms[conect.mainAtomKey]!.color
             let node = SCNNode(geometry: geometry)
-            node.rotation = SCNVector4(axis.x, axis.y, axis.x, 0.5 )
+            node.rotation = SCNVector4(axis.x, axis.y, axis.x, angle )
             node.position = SCNVector3((pointb.x + pointa.x)/2, (pointb.y + pointa.y)/2 , (pointb.z + pointa.z)/2)
             //print("\(height), \(node.rotation), \(conect.mainAtomKey), \(conection) ")
             scnScene.rootNode.addChildNode(node)
