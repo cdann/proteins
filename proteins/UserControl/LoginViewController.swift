@@ -9,24 +9,58 @@
 import UIKit
 import LocalAuthentication
 
-class LoginViewController: UIViewController {
+extension UIViewController {
+    func showAlertWithTitle( title:String, message:String ) {
+        
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertVC.addAction(okAction)
+        
+        DispatchQueue.main.async {
+            self.present(alertVC, animated: false, completion: nil)
+        }
+    }
+    
+    
+    /**
+     This method will present an UIAlertViewController to inform the user that the device has not a TouchID sensor.
+     */
+    
+    func showAlertViewIfNoBiometricSensorHasBeenDetected(){
+        self.showAlertWithTitle(title: "Error", message: "This device does not have a TouchID sensor.")
+    }
+    
+    /**
+     This method will present an UIAlertViewController to inform the user that there was a problem with the TouchID sensor.
+     
+     - parameter error: the error message
+     
+     */
+    func showAlertViewAfterEvaluatingPolicyWithMessage( message:String ){
+        self.showAlertWithTitle(title: "Error", message: message)
+    }
+    
+    
+}
 
+class LoginViewController: UIViewController {
+    
     var shouldGo: Bool = false
     let authenticationContext = LAContext()
     var error:NSError?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-       
-    }
+    @IBOutlet weak var loginOutletButton: UIButton!
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
         guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            loginOutletButton.isHidden = true
+           self.showAlertViewIfNoBiometricSensorHasBeenDetected()
             return
         }
     }
@@ -36,8 +70,7 @@ class LoginViewController: UIViewController {
         // If not, show the user an alert view and bail out!
         guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             print("should hide")
-            sender.isHidden = true;
-            showAlertViewIfNoBiometricSensorHasBeenDetected()
+            self.showAlertViewIfNoBiometricSensorHasBeenDetected()
             return
         }
         // 3. Check the fingerprint
@@ -60,7 +93,6 @@ class LoginViewController: UIViewController {
                     if 	let err = error {
                         let message  = err.localizedDescription
                         self.showAlertViewAfterEvaluatingPolicyWithMessage(message: message)
-                        
                         self.shouldGo = false
                     }
                 }
@@ -69,16 +101,16 @@ class LoginViewController: UIViewController {
     }
     
     /**
-     This method will present an UIAlertViewController to inform the user that the device has not a TouchID sensor.
+     This method will push the authenticated view controller onto the UINavigationController stack
      */
-    
-    
-    func showAlertViewIfNoBiometricSensorHasBeenDetected(){
-        print("show alert")
-        showAlertWithTitle(title: "Error", message: "This device does not have a TouchID sensor.")
+    func navigateToAuthenticatedViewController(){
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "LoggedInViewController", sender: nil)
+            
+        }
     }
     
-    func showAlertWithTitle( title:String, message:String ) {
+    override func showAlertWithTitle( title:String, message:String ) {
         
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -86,33 +118,7 @@ class LoginViewController: UIViewController {
         alertVC.addAction(okAction)
         
         DispatchQueue.main.async {
-            //            self.present(alertVC, animated: true, completion: nil)
             self.present(alertVC, animated: false, completion: nil)
-        }
-    }
-    
-    /**
-     This method will present an UIAlertViewController to inform the user that there was a problem with the TouchID sensor.
-     
-     - parameter error: the error message
-     
-     */
-    func showAlertViewAfterEvaluatingPolicyWithMessage( message:String ){
-        showAlertWithTitle(title: "Error", message: message)
-    }
-    
-    /**
-     This method will push the authenticated view controller onto the UINavigationController stack
-     */
-    func navigateToAuthenticatedViewController(){
-        
-        if let loggedInVC = storyboard?.instantiateViewController(withIdentifier: "ligandsTableViewController") {
-            
-            DispatchQueue.main.async {
-                self.present(loggedInVC, animated: true, completion: {
-                    self.navigationController?.pushViewController(loggedInVC, animated: true)
-                })
-            }
         }
     }
     

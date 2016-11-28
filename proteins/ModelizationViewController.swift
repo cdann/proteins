@@ -26,6 +26,11 @@ class ModelizationViewController: UIViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        super.viewDidLoad()
+        if (AuthentificationManager.sharedInstance.needsAuthentication) {
+            // call authentication methods
+            print("calle methodeu <3")
+        }
         setupView()
         setupScene()
         for (_, at) in atoms {
@@ -38,8 +43,7 @@ class ModelizationViewController: UIViewController {
             return //a enlever
         }
     }
-    
-    
+
     override var shouldAutorotate : Bool {
         return true
     }

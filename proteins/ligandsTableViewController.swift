@@ -32,9 +32,18 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         searchFilterLigand(searchController.searchBar.text!)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+       
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        if (AuthentificationManager.sharedInstance.needsAuthentication) {
+            // call authentication methods
+            print("show auth method")
+        }
         ligand_list = arrayFromContentsOfFileWithName("ligands")
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false

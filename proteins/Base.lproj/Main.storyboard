@@ -76,7 +76,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RBf-bI-HLI">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGround" translatesAutoresizingMaskIntoConstraints="NO" id="RBf-bI-HLI">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fNb-kb-ruq">
@@ -120,6 +120,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="LdC-aN-Jlj"/>
+                    <connections>
+                        <outlet property="loginOutletButton" destination="ZoF-Jt-YED" id="2Ea-ar-izP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aot-X3-Ltq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -144,4 +147,7 @@
             <point key="canvasLocation" x="-1539" y="865"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="backGround" width="363" height="742"/>
+    </resources>
 </document>
