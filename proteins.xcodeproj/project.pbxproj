@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010EB6BF1DEC4798006E84FB /* UserControl in Resources */ = {isa = PBXBuildFile; fileRef = 010EB6BE1DEC4798006E84FB /* UserControl */; };
+		010EB6C11DEC4800006E84FB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010EB6C01DEC4800006E84FB /* LoginViewController.swift */; };
+		010EB6C41DEC49A1006E84FB /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010EB6C31DEC49A1006E84FB /* LocalAuthentication.framework */; };
+		010EB6CA1DEC4B1C006E84FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 010EB6C91DEC4B1C006E84FB /* Assets.xcassets */; };
+		010EB6CC1DEC4CC9006E84FB /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 010EB6CB1DEC4CC9006E84FB /* Assets */; };
 		8FBED2511DC206D60040026F /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBED2501DC206D60040026F /* extensions.swift */; };
 		8FBED2531DC2085B0040026F /* Conect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBED2521DC2085B0040026F /* Conect.swift */; };
 		8FBED2551DC230B70040026F /* ATP_ideal.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8FBED2541DC230B70040026F /* ATP_ideal.txt */; };
@@ -14,7 +19,6 @@
 		8FD946621DBFAD620074DC26 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FD946611DBFAD620074DC26 /* art.scnassets */; };
 		8FD946641DBFAD620074DC26 /* ModelizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD946631DBFAD620074DC26 /* ModelizationViewController.swift */; };
 		8FD946671DBFAD620074DC26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FD946651DBFAD620074DC26 /* Main.storyboard */; };
-		8FD946691DBFAD620074DC26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FD946681DBFAD620074DC26 /* Assets.xcassets */; };
 		8FD9466C1DBFAD620074DC26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FD9466A1DBFAD620074DC26 /* LaunchScreen.storyboard */; };
 		8FD946741DBFADBA0074DC26 /* ligands.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8FD946731DBFADBA0074DC26 /* ligands.txt */; };
 		8FD946761DBFAE0E0074DC26 /* ligandsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD946751DBFAE0E0074DC26 /* ligandsTableViewController.swift */; };
@@ -22,6 +26,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		010EB6BE1DEC4798006E84FB /* UserControl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UserControl; sourceTree = "<group>"; };
+		010EB6C01DEC4800006E84FB /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = proteins/UserControl/LoginViewController.swift; sourceTree = "<group>"; };
+		010EB6C31DEC49A1006E84FB /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		010EB6C91DEC4B1C006E84FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		010EB6CB1DEC4CC9006E84FB /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		8FBED2501DC206D60040026F /* extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		8FBED2521DC2085B0040026F /* Conect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conect.swift; sourceTree = "<group>"; };
 		8FBED2541DC230B70040026F /* ATP_ideal.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ATP_ideal.txt; sourceTree = "<group>"; };
@@ -30,7 +39,6 @@
 		8FD946611DBFAD620074DC26 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		8FD946631DBFAD620074DC26 /* ModelizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelizationViewController.swift; sourceTree = "<group>"; };
 		8FD946661DBFAD620074DC26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		8FD946681DBFAD620074DC26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8FD9466B1DBFAD620074DC26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8FD9466D1DBFAD620074DC26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FD946731DBFADBA0074DC26 /* ligands.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ligands.txt; sourceTree = "<group>"; };
@@ -43,17 +51,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010EB6C41DEC49A1006E84FB /* LocalAuthentication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		010EB6C21DEC49A1006E84FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				010EB6C31DEC49A1006E84FB /* LocalAuthentication.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8FD946531DBFAD620074DC26 = {
 			isa = PBXGroup;
 			children = (
+				010EB6C01DEC4800006E84FB /* LoginViewController.swift */,
 				8FD9465E1DBFAD620074DC26 /* proteins */,
 				8FD9465D1DBFAD620074DC26 /* Products */,
+				010EB6C21DEC49A1006E84FB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,14 +90,16 @@
 				8FBED2541DC230B70040026F /* ATP_ideal.txt */,
 				8FD946731DBFADBA0074DC26 /* ligands.txt */,
 				8FD9465F1DBFAD620074DC26 /* AppDelegate.swift */,
+				010EB6CB1DEC4CC9006E84FB /* Assets */,
+				010EB6C91DEC4B1C006E84FB /* Assets.xcassets */,
 				8FD946611DBFAD620074DC26 /* art.scnassets */,
 				8FD946631DBFAD620074DC26 /* ModelizationViewController.swift */,
 				8FD946651DBFAD620074DC26 /* Main.storyboard */,
+				010EB6BE1DEC4798006E84FB /* UserControl */,
 				8FE9C86A1DC0D12D00D44199 /* AtomData.swift */,
 				8FBED2521DC2085B0040026F /* Conect.swift */,
 				8FBED2501DC206D60040026F /* extensions.swift */,
 				8FD946751DBFAE0E0074DC26 /* ligandsTableViewController.swift */,
-				8FD946681DBFAD620074DC26 /* Assets.xcassets */,
 				8FD9466A1DBFAD620074DC26 /* LaunchScreen.storyboard */,
 				8FD9466D1DBFAD620074DC26 /* Info.plist */,
 			);
@@ -145,10 +166,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FBED2551DC230B70040026F /* ATP_ideal.txt in Resources */,
+				010EB6CC1DEC4CC9006E84FB /* Assets in Resources */,
 				8FD946621DBFAD620074DC26 /* art.scnassets in Resources */,
+				010EB6BF1DEC4798006E84FB /* UserControl in Resources */,
 				8FD946741DBFADBA0074DC26 /* ligands.txt in Resources */,
+				010EB6CA1DEC4B1C006E84FB /* Assets.xcassets in Resources */,
 				8FD9466C1DBFAD620074DC26 /* LaunchScreen.storyboard in Resources */,
-				8FD946691DBFAD620074DC26 /* Assets.xcassets in Resources */,
 				8FD946671DBFAD620074DC26 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,6 +183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010EB6C11DEC4800006E84FB /* LoginViewController.swift in Sources */,
 				8FBED2511DC206D60040026F /* extensions.swift in Sources */,
 				8FBED2531DC2085B0040026F /* Conect.swift in Sources */,
 				8FD946641DBFAD620074DC26 /* ModelizationViewController.swift in Sources */,
@@ -289,7 +313,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cdannapp.proteins;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -301,7 +325,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cdannapp.proteins;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

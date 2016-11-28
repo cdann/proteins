@@ -40,11 +40,11 @@ class ModelizationViewController: UIViewController {
     }
     
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return true
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
@@ -72,7 +72,7 @@ class ModelizationViewController: UIViewController {
         scnScene.rootNode.addChildNode(cameraNode)
     }
     
-    func displayAtom(atom:AtomData) {
+    func displayAtom(_ atom:AtomData) {
         var geometry:SCNGeometry
         geometry = SCNSphere(radius: 0.4)
         geometry.materials.first?.diffuse.contents = atom.color
@@ -81,7 +81,7 @@ class ModelizationViewController: UIViewController {
         scnScene.rootNode.addChildNode(atom.node!)
     }
     
-    func getMinMax(atom:AtomData) {
+    func getMinMax(_ atom:AtomData) {
         let px = atom.pos.x
         let py = atom.pos.y
         let pz = atom.pos.z
@@ -114,7 +114,7 @@ class ModelizationViewController: UIViewController {
         }
     }
     
-    func displayConect(conect:ConectData) {
+    func displayConect(_ conect:ConectData) {
         let pointa = atoms[conect.mainAtomKey]!.pos
         print(atoms)
 //        print("______")
@@ -150,7 +150,7 @@ class ModelizationViewController: UIViewController {
             //angle = (Float(M_PI) *  acos(angle))/180
             
             //let axis = SCNVector3.crossProduct(norma, right: normb).normalize()
-            print("axis " + String(axis) + " angle " + String(angle))
+            print("axis " + String(describing: axis) + " angle " + String(angle))
             let geometry = SCNCylinder(radius: 0.2, height: height)
             geometry.materials.first?.diffuse.contents = atoms[conect.mainAtomKey]!.color
             let node = SCNNode(geometry: geometry)
