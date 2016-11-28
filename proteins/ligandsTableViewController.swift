@@ -137,22 +137,34 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
             }
         }
         performSegueWithIdentifier("toVisu", sender: self)*/
+        
+        let q = DispatchQueue.global(qos: .userInteractive)
         let parturl = "http://ligand-expo.rcsb.org/reports/\(lig!.characters.first!)/\(lig!)/\(lig!)_ideal.pdb"
         let url = URL(string: parturl)
-        do {
-            print (parturl)
-            let file =  try String(contentsOf: url!, encoding:String.Encoding.utf8)
-            let lines = file.components(separatedBy: "\n")
-            for line in lines {
-                if self.treatLine(line) == false {
-                    print("error " + String(line))
-                    return
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        print ("poooop")
+        q.async() {
+            do {
+                print (parturl)
+                let file =  try String(contentsOf: url!, encoding:String.Encoding.utf8)
+                let lines = file.components(separatedBy: "\n")
+                    for line in lines {
+                        if self.treatLine(line) == false {
+                            DispatchQueue.main.async() {
+                                print("error " + String(line))
+                            }
+                            return
+                        }
+                    }
+                DispatchQueue.main.async() {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                //print ("ttt")
+                    self.performSegue(withIdentifier: "toVisu", sender: self)
                 }
             }
-            self.performSegue(withIdentifier: "toVisu", sender: self)
-        }
-        catch {
-            print("error")
+            catch {
+                print("error")
+            }
         }
     }
     
