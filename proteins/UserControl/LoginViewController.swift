@@ -22,7 +22,6 @@ extension UIViewController {
         }
     }
     
-    
     /**
      This method will present an UIAlertViewController to inform the user that the device has not a TouchID sensor.
      */
@@ -40,8 +39,6 @@ extension UIViewController {
     func showAlertViewAfterEvaluatingPolicyWithMessage( message:String ){
         self.showAlertWithTitle(title: "Error", message: message)
     }
-    
-    
 }
 
 class LoginViewController: UIViewController {
@@ -58,18 +55,21 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            loginOutletButton.isHidden = true
-           self.showAlertViewIfNoBiometricSensorHasBeenDetected()
-            return
-        }
+//        guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+//            loginOutletButton.isHidden = true
+//            self.showAlertViewIfNoBiometricSensorHasBeenDetected()
+//            return
+//        }
+    }
+    
+    @IBAction override func unwind(for unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+    
     }
     
     @IBAction func LoginAction(_ sender: UIButton) {
         // 2. Check if the device has a fingerprint sensor
         // If not, show the user an alert view and bail out!
         guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            print("should hide")
             self.showAlertViewIfNoBiometricSensorHasBeenDetected()
             return
         }
@@ -78,16 +78,12 @@ class LoginViewController: UIViewController {
             .deviceOwnerAuthenticationWithBiometrics,
             localizedReason: "Only awesome people are allowed",
             reply: { [unowned self] (success, error) -> Void in
-                
                 if( success ) {
-                    
                     // Fingerprint recognized
                     // Go to view controller
                     print("should pass")
-                    self.shouldGo = true
                     self.navigateToAuthenticatedViewController()
                 }else {
-                    
                     // Check if there is an error
                     print("should stop")
                     if 	let err = error {
@@ -97,7 +93,6 @@ class LoginViewController: UIViewController {
                     }
                 }
         })
-        print("this is afert test  should go \(self.shouldGo)")
     }
     
     /**
@@ -123,10 +118,6 @@ class LoginViewController: UIViewController {
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == "LoggedInViewController"
-        {
-            return self.shouldGo
-        }
         return self.shouldGo
     }
     
