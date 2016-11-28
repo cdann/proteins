@@ -33,8 +33,23 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+    }
+    
+    func testForeground() {
+        print("youhou")
+    }
+    
+    override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        //POUR QUAND ON REVIENT DU BACKGROOUND
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(ligandsTableViewController.testForeground), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
         ligand_list = arrayFromContentsOfFileWithName("ligands")
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -142,7 +157,6 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         let parturl = "http://ligand-expo.rcsb.org/reports/\(lig!.characters.first!)/\(lig!)/\(lig!)_ideal.pdb"
         let url = URL(string: parturl)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        print ("poooop")
         q.async() {
             do {
                 print (parturl)
@@ -151,19 +165,24 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
                     for line in lines {
                         if self.treatLine(line) == false {
                             DispatchQueue.main.async() {
-                                print("error " + String(line))
+                                let alertController = UIAlertController(title: "Error", message:"The file has datas malformed : "+String(line), preferredStyle: UIAlertControllerStyle.alert)
+                                alertController.addAction(UIAlertAction(title: "Too bad", style: UIAlertActionStyle.default,handler: nil))
+                                self.present(alertController, animated: true, completion: nil)
                             }
                             return
                         }
                     }
                 DispatchQueue.main.async() {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                //print ("ttt")
                     self.performSegue(withIdentifier: "toVisu", sender: self)
                 }
             }
             catch {
-                print("error")
+                DispatchQueue.main.async() {
+                    let alertController = UIAlertController(title: "Error", message:"Cannot access to "+parturl, preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title: "Too bad", style: UIAlertActionStyle.default,handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
         }
     }
