@@ -134,71 +134,22 @@ class ModelizationViewController: UIViewController {
             
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("pop")
-    }
-    
+
     func displayConect(_ conect:ConectData) {
         let src = atoms[conect.mainAtomKey]!.pos
         let color = atoms[conect.mainAtomKey]!.color
         let radius:CGFloat = 0.2
-        //print(atoms)
-//        print("______")
         for conection in conect.conections {
-            
-            
             let dest = atoms[conection]!.pos
             let diff = SCNVector3(x: src.x-dest.x, y: src.y-dest.y, z: src.z-dest.z)
             let height = diff.lenght()
-            
             let geometry = SCNCylinder(radius: radius, height: CGFloat(height))
             geometry.materials.first?.diffuse.contents = color
             let node = SCNNode(geometry: geometry)
             node.position = SCNVector3((dest.x + src.x)/2, (dest.y + src.y)/2 , (dest.z + src.z)/2)
             node.eulerAngles = getEuler(diff: diff, height: Double(height))
             scnScene.rootNode.addChildNode(node)
-             //scnScene.rootNode.addChildNode(node)
-            
-            /*let norma = pointa.normalize()
-            let normb = pointb.normalize()
-            // les deux vecteurs normalisés
-            let height = CGFloat(SCNVector3.distance(pointa, right: pointb))
-            
-            // solution1
- /*          var angle = SCNVector3.dotProduct(norma, right: normb)
-            print(" dot product \(pointa) \(pointb) == \(angle)")
-            angle = (Float(M_PI) *  angle)/180
-            angle = acosf(angle)*/
-            
-            //solution 2
-            let dot = SCNVector3.dotProduct(pointa, right: pointb)
-            let mul = pointa.getNorm() * pointb.getNorm()
-            let angle = acosf(dot/mul)
-            
-            let axis = SCNVector3.crossProduct(norma, right: normb)
-            /*var angle = SCNVector3.dotProduct(pointa, right: pointb)
-            angle = angle/pointa.getNorm() * pointb.getNorm()
-            angle = acosf(angle)
-            angle = (Float(M_PI) *  angle)/180*/
-            /*let axis = SCNVector3.crossProduct(norma, right: normb).normalize()
-            var angle = SCNVector3.dotProduct(pointa, right: pointb)
-            angle = sqrt(SCNVector3) + angle
-            angle = (Float(M_PI) *  angle)/180*/
-            //let angle = SCNVector3.dotProduct(pointa, right: pointb)/SCNVector3.dotProduct(pointa.normalize(), right: pointb.normalize())
-            //print(acosf(angle))
-            //angle = (Float(M_PI) *  acos(angle))/180
-            
-            //let axis = SCNVector3.crossProduct(norma, right: normb).normalize()
-            //print("axis " + String(describing: axis) + " angle " + String(angle))
-            let geometry = SCNCylinder(radius: 0.2, height: height)
-            geometry.materials.first?.diffuse.contents = atoms[conect.mainAtomKey]!.color
-            let node = SCNNode(geometry: geometry)
-            node.rotation = SCNVector4(axis.x, axis.y, axis.x, angle )
-            node.position = SCNVector3((pointb.x + pointa.x)/2, (pointb.y + pointa.y)/2 , (pointb.z + pointa.z)/2)
-            //print("\(height), \(node.rotation), \(conect.mainAtomKey), \(conection) ")
-            scnScene.rootNode.addChildNode(node)
-            //return //a enlever*/
+
         }
     }
     
