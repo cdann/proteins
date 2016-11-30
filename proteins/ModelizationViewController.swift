@@ -134,23 +134,27 @@ class ModelizationViewController: UIViewController {
             
         }
     }
+    
 
     func displayConect(_ conect:ConectData) {
         let src = atoms[conect.mainAtomKey]!.pos
         let color = atoms[conect.mainAtomKey]!.color
         let radius:CGFloat = 0.2
         for conection in conect.conections {
-            let dest = atoms[conection]!.pos
-            let diff = SCNVector3(x: src.x-dest.x, y: src.y-dest.y, z: src.z-dest.z)
-            let height = diff.lenght()
-            let geometry = SCNCylinder(radius: radius, height: CGFloat(height))
-            geometry.materials.first?.diffuse.contents = color
-            let node = SCNNode(geometry: geometry)
-            node.position = SCNVector3((dest.x + src.x)/2, (dest.y + src.y)/2 , (dest.z + src.z)/2)
-            node.eulerAngles = getEuler(diff: diff, height: Double(height))
-            scnScene.rootNode.addChildNode(node)
+            if atoms[conection]!.checkConnect == false {
+                let dest = atoms[conection]!.pos
+                let diff = SCNVector3(x: src.x-dest.x, y: src.y-dest.y, z: src.z-dest.z)
+                let height = diff.lenght()
+                let geometry = SCNCylinder(radius: radius, height: CGFloat(height))
+                geometry.materials.first?.diffuse.contents = color
+                let node = SCNNode(geometry: geometry)
+                node.position = SCNVector3((dest.x + src.x)/2, (dest.y + src.y)/2 , (dest.z + src.z)/2)
+                node.eulerAngles = getEuler(diff: diff, height: Double(height))
+                scnScene.rootNode.addChildNode(node)
+            }
 
         }
+        atoms[conect.mainAtomKey]!.checkConnect = true
     }
     
     func getEuler(diff:SCNVector3, height:Double) -> SCNVector3 {
