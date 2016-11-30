@@ -14,7 +14,12 @@ class AtomData: CustomStringConvertible {
     let key:Int
     let pos :SCNVector3
     let color:UIColor
-    var node:SCNNode?
+    let elm:String
+    var node:SCNNode?{
+        didSet{
+            node?.name = elm
+        }
+    }
     
     
     var description: String {
@@ -28,6 +33,7 @@ class AtomData: CustomStringConvertible {
         if let ke = Int(k), let x = Float(px), let y = Float(py), let z = Float(pz){
             key = ke
             pos = SCNVector3(x:x, y:y, z:z)
+            elm = elem
             color = UIColor.getCPKColor(elem)
         }
         else {

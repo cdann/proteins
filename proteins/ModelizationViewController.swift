@@ -9,12 +9,14 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import SpriteKit
 
 class ModelizationViewController: UIViewController {
     
     var scnView: SCNView!
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
+    var myLabel:SKLabelNode!
     
     var xminmax:(Float, Float)? = nil
     var yminmax:(Float, Float)? = nil
@@ -22,6 +24,7 @@ class ModelizationViewController: UIViewController {
     
     var atoms = [Int : AtomData]()
     var conects = [Int: ConectData]()
+    var textNode:SCNNode?
 
     
     override func viewDidLoad(){
@@ -29,11 +32,11 @@ class ModelizationViewController: UIViewController {
     
         setupView()
         setupScene()
-        let text = "mon text"
-        let newText = SCNText(string: text, extrusionDepth:0.1)
+        //let text = "mon text"
+        /*let newText = SCNText(string: text, extrusionDepth:0.1)
         newText.font = UIFont (name: "Arial", size: 3)
         newText.firstMaterial!.diffuse.contents = UIColor.white
-        newText.firstMaterial!.specular.contents = UIColor.white
+        newText.firstMaterial!.specular.contents = UIColor.white*/
         
         for (_, at) in atoms {
             displayAtom(at)
@@ -41,10 +44,10 @@ class ModelizationViewController: UIViewController {
         }
         
         setupCamera()
-        let textNode = SCNNode(geometry: newText)
+       /* let textNode = SCNNode(geometry: newText)
         //textNode.constraints = SCNLookAtConstraint
         textNode.position = SCNVector3(x:xminmax!.0, y:yminmax!.1, z: zminmax!.1+10)
-        scnScene.rootNode.addChildNode(textNode)
+        scnScene.rootNode.addChildNode(textNode)*/
         for (_,co) in conects {
             displayConect(co)
             return //a enlever
@@ -125,6 +128,56 @@ class ModelizationViewController: UIViewController {
         }
     }
     
+    
+    func handleTouch(node:SCNNode) {
+        print("bla")
+        if let elm = node.name  {
+            if textNode != nil {
+                textNode!.removeFromParentNode()
+                textNode = nil
+            }
+            let newText = SCNText(string: elm, extrusionDepth:0.03)
+            newText.font = UIFont (name: "Arial", size: 0.7)
+            newText.firstMaterial!.diffuse.contents = UIColor.white
+            print ("Touch "+elm)
+            textNode = SCNNode(geometry: newText)
+            let contraint = SCNLookAtConstraint(target: cameraNode)
+            contraint.isGimbalLockEnabled = true
+            textNode!.constraints = [contraint]
+            //textNode.constraints = SCNLookAtConstraint
+            textNode!.position = SCNVector3(x:node.position.x - 0.15, y:node.position.y - 0.5, z: node.position.z)
+            
+            scnScene.rootNode.addChildNode(textNode!)
+            
+        }
+    }
+    
+   /* @IBAction func displayElem(sender: UITapGestureRecognizer) {
+        print("pop")
+        let location :CGPoint = sender.location(in: scnView)
+        let hitResults = scnView.hitTest(location, options: nil)
+        if hitResults.count > 0 {
+            let result = hitResults.first!
+            handleTouch(node: result.node)
+        }
+    }*/
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+       //On prend le premier touch
+        let touch = touches.first!
+        //On localise le touch par rapport aux coordonnées de la sceneView
+        let location = touch.location(in: scnView)
+        //On test un rayon qui part de l'endroit touché par le user ça nous renvoie un SCNHitTestResult
+        let hitResults = scnView.hitTest(location, options: nil)
+
+        //Si il y a bien un node de touché on l'envoie a handleTouch
+        if hitResults.count > 0 {
+            let result = hitResults.first!
+            handleTouch(node: result.node)
+        }
+    }
+    
+
     func displayConect(_ conect:ConectData) {
         let pointa = atoms[conect.mainAtomKey]!.pos
         //print(atoms)
