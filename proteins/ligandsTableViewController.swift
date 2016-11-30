@@ -9,6 +9,7 @@
 import UIKit
 
 class ligandsTableViewController: UITableViewController, UISearchResultsUpdating {
+
     var ligand_list: [String]?
     var ligand_list_filter = [String]()
     var atoms = [Int: AtomData]()
@@ -19,7 +20,6 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         guard let path = Bundle.main.path(forResource: fileName, ofType: "txt") else {
             return nil
         }
-        
         do {
             let content = try String(contentsOfFile:path, encoding: String.Encoding.utf8)
             return content.components(separatedBy: "\n")
@@ -27,33 +27,38 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
             return nil
         }
     }
-
+    
     func updateSearchResults(for searchController: UISearchController) {
         searchFilterLigand(searchController.searchBar.text!)
     }
     
     func testForeground() {
-        print("youhou")
+        print("testForeGround")
+        performSegue(withIdentifier: "goback", sender: nil)
+//        AuthentificationManager.sharedInstance.needsAuthentication = true
+//        AuthentificationManager.sharedInstance.checkTouchId()
+//        if (AuthentificationManager.sharedInstance.needsAuthentication) {
+//            _ = navigationController?.popToRootViewController(animated: true)
+//        } else {
+//            _ = navigationController?.popViewController(animated: true)
+//        }
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
         //POUR QUAND ON REVIENT DU BACKGROOUND
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(ligandsTableViewController.testForeground), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+//        let notificationCenter = NotificationCenter.default
+//        notificationCenter.addObserver(self, selector: #selector(ligandsTableViewController.testForeground), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         ligand_list = arrayFromContentsOfFileWithName("ligands")
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-         definesPresentationContext = true
+        definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        
         print("*")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
@@ -65,19 +70,19 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         
         tableView.reloadData()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {
             return ligand_list_filter.count        }
@@ -85,7 +90,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         // #warning Incomplete implementation, return the number of rows
         
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ligandCell", for: indexPath)
@@ -98,9 +103,9 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         else {
             cell.textLabel?.text = ligand_list![indexPath.row]
         }
-            
+        
         // Configure the cell...
-
+        
         return cell
     }
     
@@ -137,15 +142,15 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         let lig = ligand_list?[indexPath.row]
         print(lig!)
         
-       /* let lines = arrayFromContentsOfFileWithName("ATP_ideal")
-        for line in lines! {
-            print(line)
-            if treatLine(line) == false {
-                print("error " + String(line))
-                return
-            }
-        }
-        performSegueWithIdentifier("toVisu", sender: self)*/
+        /* let lines = arrayFromContentsOfFileWithName("ATP_ideal")
+         for line in lines! {
+         print(line)
+         if treatLine(line) == false {
+         print("error " + String(line))
+         return
+         }
+         }
+         performSegueWithIdentifier("toVisu", sender: self)*/
         
         let q = DispatchQueue.global(qos: .userInteractive)
         let parturl = "http://ligand-expo.rcsb.org/reports/\(lig!.characters.first!)/\(lig!)/\(lig!)_ideal.pdb"
@@ -156,16 +161,16 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
                 print (parturl)
                 let file =  try String(contentsOf: url!, encoding:String.Encoding.utf8)
                 let lines = file.components(separatedBy: "\n")
-                    for line in lines {
-                        if self.treatLine(line) == false {
-                            DispatchQueue.main.async() {
-                                let alertController = UIAlertController(title: "Error", message:"The file has datas malformed : "+String(line), preferredStyle: UIAlertControllerStyle.alert)
-                                alertController.addAction(UIAlertAction(title: "Too bad", style: UIAlertActionStyle.default,handler: nil))
-                                self.present(alertController, animated: true, completion: nil)
-                            }
-                            return
+                for line in lines {
+                    if self.treatLine(line) == false {
+                        DispatchQueue.main.async() {
+                            let alertController = UIAlertController(title: "Error", message:"The file has datas malformed : "+String(line), preferredStyle: UIAlertControllerStyle.alert)
+                            alertController.addAction(UIAlertAction(title: "Too bad", style: UIAlertActionStyle.default,handler: nil))
+                            self.present(alertController, animated: true, completion: nil)
                         }
+                        return
                     }
+                }
                 DispatchQueue.main.async() {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self.performSegue(withIdentifier: "toVisu", sender: self)

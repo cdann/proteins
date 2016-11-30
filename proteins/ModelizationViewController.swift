@@ -26,6 +26,7 @@ class ModelizationViewController: UIViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
+    
         setupView()
         setupScene()
         let text = "mon text"
@@ -49,8 +50,7 @@ class ModelizationViewController: UIViewController {
             return //a enlever
         }
     }
-    
-    
+
     override var shouldAutorotate : Bool {
         return true
     }

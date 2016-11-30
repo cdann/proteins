@@ -21,17 +21,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ScreenLaunch" translatesAutoresizingMaskIntoConstraints="NO" id="ccE-W6-ueB">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backGround" translatesAutoresizingMaskIntoConstraints="NO" id="Npb-uW-c6V">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Swifty proteine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5z3-eJ-npm">
+                                <rect key="frame" x="116" y="279" width="155" height="108"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ccE-W6-ueB" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="4Gp-22-pDH"/>
-                            <constraint firstItem="ccE-W6-ueB" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="LAE-4c-hIH"/>
-                            <constraint firstItem="ccE-W6-ueB" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="enX-nD-v4g"/>
-                            <constraint firstAttribute="trailing" secondItem="ccE-W6-ueB" secondAttribute="trailing" id="fCB-BG-xcG"/>
+                            <constraint firstItem="Npb-uW-c6V" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="GdK-fG-f9b"/>
+                            <constraint firstAttribute="trailing" secondItem="Npb-uW-c6V" secondAttribute="trailing" id="QPi-tQ-en4"/>
+                            <constraint firstItem="Npb-uW-c6V" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="cIz-uO-SxA"/>
+                            <constraint firstItem="Npb-uW-c6V" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="ed0-Wk-yhL"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,6 +47,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ScreenLaunch" width="690" height="666"/>
+        <image name="backGround" width="363" height="742"/>
     </resources>
 </document>

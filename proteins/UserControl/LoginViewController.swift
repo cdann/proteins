@@ -9,75 +9,7 @@
 import UIKit
 import LocalAuthentication
 
-class LoginViewController: UIViewController {
-
-    var shouldGo: Bool = false
-    let authenticationContext = LAContext()
-    var error:NSError?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-       
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            return
-        }
-    }
-    
-    @IBAction func LoginAction(_ sender: UIButton) {
-        // 2. Check if the device has a fingerprint sensor
-        // If not, show the user an alert view and bail out!
-        guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            print("should hide")
-            sender.isHidden = true;
-            showAlertViewIfNoBiometricSensorHasBeenDetected()
-            return
-        }
-        // 3. Check the fingerprint
-        authenticationContext.evaluatePolicy(
-            .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: "Only awesome people are allowed",
-            reply: { [unowned self] (success, error) -> Void in
-                
-                if( success ) {
-                    
-                    // Fingerprint recognized
-                    // Go to view controller
-                    print("should pass")
-                    self.shouldGo = true
-                    self.navigateToAuthenticatedViewController()
-                }else {
-                    
-                    // Check if there is an error
-                    print("should stop")
-                    if 	let err = error {
-                        let message  = err.localizedDescription
-                        self.showAlertViewAfterEvaluatingPolicyWithMessage(message: message)
-                        
-                        self.shouldGo = false
-                    }
-                }
-        })
-        print("this is afert test  should go \(self.shouldGo)")
-    }
-    
-    /**
-     This method will present an UIAlertViewController to inform the user that the device has not a TouchID sensor.
-     */
-    
-    
-    func showAlertViewIfNoBiometricSensorHasBeenDetected(){
-        print("show alert")
-        showAlertWithTitle(title: "Error", message: "This device does not have a TouchID sensor.")
-    }
-    
+extension UIViewController {
     func showAlertWithTitle( title:String, message:String ) {
         
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -86,9 +18,16 @@ class LoginViewController: UIViewController {
         alertVC.addAction(okAction)
         
         DispatchQueue.main.async {
-            //            self.present(alertVC, animated: true, completion: nil)
             self.present(alertVC, animated: false, completion: nil)
         }
+    }
+    
+    /**
+     This method will present an UIAlertViewController to inform the user that the device has not a TouchID sensor.
+     */
+    
+    func showAlertViewIfNoBiometricSensorHasBeenDetected(){
+        self.showAlertWithTitle(title: "Error", message: "This device does not have a TouchID sensor.")
     }
     
     /**
@@ -98,29 +37,87 @@ class LoginViewController: UIViewController {
      
      */
     func showAlertViewAfterEvaluatingPolicyWithMessage( message:String ){
-        showAlertWithTitle(title: "Error", message: message)
+        self.showAlertWithTitle(title: "Error", message: message)
+    }
+}
+
+class LoginViewController: UIViewController {
+    
+    var shouldGo: Bool = false
+    let authenticationContext = LAContext()
+    var error:NSError?
+    @IBOutlet weak var loginOutletButton: UIButton!
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+//            loginOutletButton.isHidden = true
+//            self.showAlertViewIfNoBiometricSensorHasBeenDetected()
+//            return
+//        }
+    }
+    
+    @IBAction override func unwind(for unwindSegue: UIStoryboardSegue, towardsViewController subsequentVC: UIViewController) {
+    
+    }
+    
+    @IBAction func LoginAction(_ sender: UIButton) {
+        // 2. Check if the device has a fingerprint sensor
+        // If not, show the user an alert view and bail out!
+        guard self.authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            self.showAlertViewIfNoBiometricSensorHasBeenDetected()
+            return
+        }
+        // 3. Check the fingerprint
+        authenticationContext.evaluatePolicy(
+            .deviceOwnerAuthenticationWithBiometrics,
+            localizedReason: "Only awesome people are allowed",
+            reply: { [unowned self] (success, error) -> Void in
+                if( success ) {
+                    // Fingerprint recognized
+                    // Go to view controller
+                    print("should pass")
+                    self.navigateToAuthenticatedViewController()
+                }else {
+                    // Check if there is an error
+                    print("should stop")
+                    if 	let err = error {
+                        let message  = err.localizedDescription
+                        self.showAlertViewAfterEvaluatingPolicyWithMessage(message: message)
+                        self.shouldGo = false
+                    }
+                }
+        })
     }
     
     /**
      This method will push the authenticated view controller onto the UINavigationController stack
      */
     func navigateToAuthenticatedViewController(){
-        
-        if let loggedInVC = storyboard?.instantiateViewController(withIdentifier: "ligandsTableViewController") {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "LoggedInViewController", sender: nil)
             
-            DispatchQueue.main.async {
-                self.present(loggedInVC, animated: true, completion: {
-                    self.navigationController?.pushViewController(loggedInVC, animated: true)
-                })
-            }
+        }
+    }
+    
+    override func showAlertWithTitle( title:String, message:String ) {
+        
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertVC.addAction(okAction)
+        
+        DispatchQueue.main.async {
+            self.present(alertVC, animated: false, completion: nil)
         }
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == "LoggedInViewController"
-        {
-            return self.shouldGo
-        }
         return self.shouldGo
     }
     
