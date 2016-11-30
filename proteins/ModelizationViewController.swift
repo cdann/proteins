@@ -22,20 +22,44 @@ class ModelizationViewController: UIViewController {
     
     var atoms = [Int : AtomData]()
     var conects = [Int: ConectData]()
-
+    
+    @IBAction func buttonShare(_ sender: UIBarButtonItem) {
+        let bounds = UIScreen.main.bounds
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+        self.view.drawHierarchy(in: bounds, afterScreenUpdates: false)
+        //        if let img = UIGraphicsGetImageFromCurrentImageContext() {
+        //            UIGraphicsEndImageContext()
+        //            let activityViewController = UIActivityViewController(activityItems: [img], applicationActivities: nil)
+        //            self.present(activityViewController, animated: true, completion: nil)
+        //        }
+    
+        if let img = UIGraphicsGetImageFromCurrentImageContext()
+        {
+//            let twitter = UIActivity();
+//            twitter.activityType = UIActivityType.postToTwitter();
+            let activityVC = UIActivityViewController(activityItems: [img], applicationActivities: [UIActivity.init()])
+            UIGraphicsEndImageContext()
+            //New Excluded Activities Code
+            activityVC.excludedActivityTypes = [UIActivityType.saveToCameraRoll, UIActivityType.addToReadingList, UIActivityType.assignToContact]
+//            activityVC.popoverPresentationController?.sourceView = sender.customView
+            self.present(activityVC, animated: true, completion: nil)
+            
+        }
+        
+    }
     
     override func viewDidLoad(){
         super.viewDidLoad()
-       // var atoms = [Int : AtomData]()
-       // var conects = [Int: ConectData]()
-    
+        // var atoms = [Int : AtomData]()
+        // var conects = [Int: ConectData]()
+        
         setupView()
         setupScene()
         /*let text = "mon text"
-        let newText = SCNText(string: text, extrusionDepth:0.1)
-        newText.font = UIFont (name: "Arial", size: 3)
-        newText.firstMaterial!.diffuse.contents = UIColor.white
-        newText.firstMaterial!.specular.contents = UIColor.white*/
+         let newText = SCNText(string: text, extrusionDepth:0.1)
+         newText.font = UIFont (name: "Arial", size: 3)
+         newText.firstMaterial!.diffuse.contents = UIColor.white
+         newText.firstMaterial!.specular.contents = UIColor.white*/
         
         for (_, at) in atoms {
             displayAtom(at)
@@ -44,9 +68,9 @@ class ModelizationViewController: UIViewController {
         
         setupCamera()
         /*let textNode = SCNNode(geometry: newText)
-        //textNode.constraints = SCNLookAtConstraint
-        textNode.position = SCNVector3(x:xminmax!.0, y:yminmax!.1, z: zminmax!.1+10)
-        scnScene.rootNode.addChildNode(textNode)*/
+         //textNode.constraints = SCNLookAtConstraint
+         textNode.position = SCNVector3(x:xminmax!.0, y:yminmax!.1, z: zminmax!.1+10)
+         scnScene.rootNode.addChildNode(textNode)*/
         for (_,co) in conects {
             displayConect(co)
         }
@@ -60,7 +84,7 @@ class ModelizationViewController: UIViewController {
         conects.removeAll()
         super.viewDidDisappear(animated)
     }
-
+    
     override var shouldAutorotate : Bool {
         return true
     }
@@ -134,7 +158,7 @@ class ModelizationViewController: UIViewController {
             
         }
     }
-
+    
     func displayConect(_ conect:ConectData) {
         let src = atoms[conect.mainAtomKey]!.pos
         let color = atoms[conect.mainAtomKey]!.color
@@ -149,7 +173,6 @@ class ModelizationViewController: UIViewController {
             node.position = SCNVector3((dest.x + src.x)/2, (dest.y + src.y)/2 , (dest.z + src.z)/2)
             node.eulerAngles = getEuler(diff: diff, height: Double(height))
             scnScene.rootNode.addChildNode(node)
-
         }
     }
     
@@ -179,13 +202,10 @@ class ModelizationViewController: UIViewController {
         }
         return SCNVector3(CGFloat(pitch), CGFloat(yaw), 0)
     }
-
-    
-
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
-
+    
 }
