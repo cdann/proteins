@@ -15,6 +15,7 @@ class AtomData: CustomStringConvertible {
     let pos :SCNVector3
     let color:UIColor
     var node:SCNNode?
+    var checkConnect = false
     
     
     var description: String {
