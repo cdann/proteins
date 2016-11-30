@@ -130,7 +130,6 @@ class ModelizationViewController: UIViewController {
     
     
     func handleTouch(node:SCNNode) {
-        print("bla")
         if let elm = node.name  {
             if textNode != nil {
                 textNode!.removeFromParentNode()
@@ -138,14 +137,14 @@ class ModelizationViewController: UIViewController {
             }
             let newText = SCNText(string: elm, extrusionDepth:0.03)
             newText.font = UIFont (name: "Arial", size: 0.7)
-            newText.firstMaterial!.diffuse.contents = UIColor.white
+            newText.firstMaterial!.diffuse.contents = node.geometry!.materials.first?.diffuse.contents
+                
             print ("Touch "+elm)
             textNode = SCNNode(geometry: newText)
-            let contraint = SCNLookAtConstraint(target: cameraNode)
-            contraint.isGimbalLockEnabled = true
+            let contraint = SCNBillboardConstraint()
             textNode!.constraints = [contraint]
             //textNode.constraints = SCNLookAtConstraint
-            textNode!.position = SCNVector3(x:node.position.x - 0.15, y:node.position.y - 0.5, z: node.position.z)
+            textNode!.position = SCNVector3(x:node.position.x - 0.15, y:node.position.y - 0.15, z: node.position.z - 0.15)
             
             scnScene.rootNode.addChildNode(textNode!)
             
