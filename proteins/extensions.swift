@@ -78,21 +78,16 @@ extension UIColor {
 
 extension SCNVector3 {
     
-    public func normalize() -> SCNVector3 {
-        let norm = self.getNorm()
-        return SCNVector3(x/norm, y/norm, z/norm)
-    }
-    
-    public func getNorm() -> Float{
+    public func lenght() -> Float{
         return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))
     }
     
-    public static func distance(_ left:SCNVector3, right:SCNVector3) -> Float {
+    public  func distance(_ left:SCNVector3) -> Float {
         //print("------calcul-----")
         //print("start \(left)  \(right)")
-        var xdiff = left.x - right.x
-        var ydiff = left.y - right.y
-        var zdiff = left.z - right.z
+        var xdiff = left.x - self.x
+        var ydiff = left.y - self.y
+        var zdiff = left.z - self.z
         //print("diffs \(xdiff)  \(ydiff)  \(zdiff)")
         
         
@@ -105,17 +100,6 @@ extension SCNVector3 {
         let result = sqrtf(sum)
         //print("\(result) ----------------------")
         return result
-    }
-    
-    public static func crossProduct(_ left:SCNVector3, right:SCNVector3) -> SCNVector3 {
-        let x = left.y * right.z - right.y * left.z
-        let y = left.z * right.x - right.z * left.x
-        let z = left.x * right.y - right.x * left.y
-        return SCNVector3(x, y, z)
-    }
-    
-    public static func dotProduct(_ left:SCNVector3, right:SCNVector3) -> Float {
-        return right.x * left.x + right.y * left.y + right.z * left.z
     }
     
 }

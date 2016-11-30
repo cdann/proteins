@@ -189,6 +189,8 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         if let ctrl = segue.destination as? ModelizationViewController {
             ctrl.atoms = self.atoms
             ctrl.conects = self.conects
+            atoms.removeAll()
+            conects.removeAll()
         }
     }
     

@@ -81,5 +81,4 @@ class AuthentificationManager {
             LoginViewController.loginSharedInstance.present(alertVC, animated: false, completion: nil)
         }
     }
-    
 }
