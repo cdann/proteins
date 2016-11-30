@@ -26,14 +26,16 @@ class ModelizationViewController: UIViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
+       // var atoms = [Int : AtomData]()
+       // var conects = [Int: ConectData]()
     
         setupView()
         setupScene()
-        let text = "mon text"
+        /*let text = "mon text"
         let newText = SCNText(string: text, extrusionDepth:0.1)
         newText.font = UIFont (name: "Arial", size: 3)
         newText.firstMaterial!.diffuse.contents = UIColor.white
-        newText.firstMaterial!.specular.contents = UIColor.white
+        newText.firstMaterial!.specular.contents = UIColor.white*/
         
         for (_, at) in atoms {
             displayAtom(at)
@@ -41,14 +43,22 @@ class ModelizationViewController: UIViewController {
         }
         
         setupCamera()
-        let textNode = SCNNode(geometry: newText)
+        /*let textNode = SCNNode(geometry: newText)
         //textNode.constraints = SCNLookAtConstraint
         textNode.position = SCNVector3(x:xminmax!.0, y:yminmax!.1, z: zminmax!.1+10)
-        scnScene.rootNode.addChildNode(textNode)
+        scnScene.rootNode.addChildNode(textNode)*/
         for (_,co) in conects {
             displayConect(co)
-            return //a enlever
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        scnScene.rootNode.enumerateChildNodes(){ (node, stop) -> Void in
+            node.removeFromParentNode()
+        }
+        atoms.removeAll()
+        conects.removeAll()
+        super.viewDidDisappear(animated)
     }
 
     override var shouldAutorotate : Bool {
@@ -125,13 +135,32 @@ class ModelizationViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("pop")
+    }
+    
     func displayConect(_ conect:ConectData) {
-        let pointa = atoms[conect.mainAtomKey]!.pos
+        let src = atoms[conect.mainAtomKey]!.pos
+        let color = atoms[conect.mainAtomKey]!.color
+        let radius:CGFloat = 0.2
         //print(atoms)
 //        print("______")
         for conection in conect.conections {
-            let pointb = atoms[conection]!.pos
-            let norma = pointa.normalize()
+            
+            
+            let dest = atoms[conection]!.pos
+            let diff = SCNVector3(x: src.x-dest.x, y: src.y-dest.y, z: src.z-dest.z)
+            let height = diff.lenght()
+            
+            let geometry = SCNCylinder(radius: radius, height: CGFloat(height))
+            geometry.materials.first?.diffuse.contents = color
+            let node = SCNNode(geometry: geometry)
+            node.position = SCNVector3((dest.x + src.x)/2, (dest.y + src.y)/2 , (dest.z + src.z)/2)
+            node.eulerAngles = getEuler(diff: diff, height: Double(height))
+            scnScene.rootNode.addChildNode(node)
+             //scnScene.rootNode.addChildNode(node)
+            
+            /*let norma = pointa.normalize()
             let normb = pointb.normalize()
             // les deux vecteurs normalisés
             let height = CGFloat(SCNVector3.distance(pointa, right: pointb))
@@ -169,8 +198,35 @@ class ModelizationViewController: UIViewController {
             node.position = SCNVector3((pointb.x + pointa.x)/2, (pointb.y + pointa.y)/2 , (pointb.z + pointa.z)/2)
             //print("\(height), \(node.rotation), \(conect.mainAtomKey), \(conection) ")
             scnScene.rootNode.addChildNode(node)
-            //return //a enlever
+            //return //a enlever*/
         }
+    }
+    
+    func getEuler(diff:SCNVector3, height:Double) -> SCNVector3 {
+        let xzdiff = pow((pow(Double(diff.x), 2) + pow(Double(diff.z),2)),0.5)
+        var pitch: Double
+        if diff.y < 0 {
+            pitch = M_PI - asin(Double(xzdiff)/height)
+        } else {
+            pitch = asin(Double(xzdiff)/height)
+        }
+        if diff.z != 0 {
+            pitch = sign(Double(diff.z)) * pitch
+        }
+        var yaw: Double
+        if diff.x == 0 && diff.z == 0 {
+            yaw = 0
+        } else {
+            let inner = Double(diff.x) / (height * sin (pitch))
+            if inner > 1 {
+                yaw = M_PI_2
+            } else if inner < -1 {
+                yaw = M_PI_2
+            } else {
+                yaw = asin(inner)
+            }
+        }
+        return SCNVector3(CGFloat(pitch), CGFloat(yaw), 0)
     }
 
     

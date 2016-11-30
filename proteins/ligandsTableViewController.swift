@@ -116,7 +116,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
             return true
         }
         if words.count == 12 && words[0] == "ATOM"{
-            guard let a = AtomData(k: words[1], px: words[6], py: words[7], pz: words[8], elem: words[11]) else{
+            guard let a = AtomData(k: words[1], px: words[6], py: words[7], pz: words[8], el: words[11]) else{
                 print("error in atom construction")
                 return false
             }
@@ -190,6 +190,8 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         if let ctrl = segue.destination as? ModelizationViewController {
             ctrl.atoms = self.atoms
             ctrl.conects = self.conects
+            atoms.removeAll()
+            conects.removeAll()
         }
     }
     
