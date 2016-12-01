@@ -1,4 +1,4 @@
-//
+
 //  ligandsTableViewController.swift
 //  proteins
 //
@@ -35,20 +35,19 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     func testForeground() {
         print("testForeGround")
         performSegue(withIdentifier: "goback", sender: nil)
-//        AuthentificationManager.sharedInstance.needsAuthentication = true
-//        AuthentificationManager.sharedInstance.checkTouchId()
-//        if (AuthentificationManager.sharedInstance.needsAuthentication) {
-//            _ = navigationController?.popToRootViewController(animated: true)
-//        } else {
-//            _ = navigationController?.popViewController(animated: true)
-//        }
+        AuthentificationManager.sharedInstance.needsAuthentication = true
+        if (AuthentificationManager.sharedInstance.needsAuthentication) {
+            _ = navigationController?.popToRootViewController(animated: true)
+        } else {
+            _ = navigationController?.popViewController(animated: true)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //POUR QUAND ON REVIENT DU BACKGROOUND
-//        let notificationCenter = NotificationCenter.default
-//        notificationCenter.addObserver(self, selector: #selector(ligandsTableViewController.testForeground), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(ligandsTableViewController.testForeground), name:NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         ligand_list = arrayFromContentsOfFileWithName("ligands")
         searchController.searchResultsUpdater = self
@@ -103,9 +102,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         else {
             cell.textLabel?.text = ligand_list![indexPath.row]
         }
-        
-        // Configure the cell...
-        
+
         return cell
     }
     
@@ -139,19 +136,8 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let lig = ligand_list?[indexPath.row]
-        print(lig!)
-        
-        /* let lines = arrayFromContentsOfFileWithName("ATP_ideal")
-         for line in lines! {
-         print(line)
-         if treatLine(line) == false {
-         print("error " + String(line))
-         return
-         }
-         }
-         performSegueWithIdentifier("toVisu", sender: self)*/
-        
         let q = DispatchQueue.global(qos: .userInteractive)
         let parturl = "http://ligand-expo.rcsb.org/reports/\(lig!.characters.first!)/\(lig!)/\(lig!)_ideal.pdb"
         let url = URL(string: parturl)

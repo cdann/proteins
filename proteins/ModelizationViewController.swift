@@ -27,6 +27,21 @@ class ModelizationViewController: UIViewController {
     var textNode:SCNNode?
 
     
+    @IBAction func buttonShare(_ sender: UIBarButtonItem) {
+        let bounds = UIScreen.main.bounds
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+        self.view.drawHierarchy(in: bounds, afterScreenUpdates: false)
+        if let img = UIGraphicsGetImageFromCurrentImageContext()
+        {
+            let activityVC = UIActivityViewController(activityItems: [img], applicationActivities: [UIActivity.init()])
+            UIGraphicsEndImageContext()
+            activityVC.excludedActivityTypes = [UIActivityType.saveToCameraRoll, UIActivityType.addToReadingList, UIActivityType.assignToContact]
+            self.present(activityVC, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         setupView()
@@ -36,6 +51,7 @@ class ModelizationViewController: UIViewController {
             getMinMax(at)
         }
         setupCamera()
+
         for (_,co) in conects {
             displayConect(co)
         }
@@ -49,7 +65,7 @@ class ModelizationViewController: UIViewController {
         conects.removeAll()
         super.viewDidDisappear(animated)
     }
-
+    
     override var shouldAutorotate : Bool {
         return true
     }
@@ -161,7 +177,6 @@ class ModelizationViewController: UIViewController {
     }
     
 
-
     func displayConect(_ conect:ConectData) {
         let src = atoms[conect.mainAtomKey]!.pos
         let color = atoms[conect.mainAtomKey]!.color
@@ -178,7 +193,6 @@ class ModelizationViewController: UIViewController {
                 node.eulerAngles = getEuler(diff: diff, height: Double(height))
                 scnScene.rootNode.addChildNode(node)
             }
-
         }
         atoms[conect.mainAtomKey]!.checkConnect = true
     }
@@ -209,13 +223,10 @@ class ModelizationViewController: UIViewController {
         }
         return SCNVector3(CGFloat(pitch), CGFloat(yaw), 0)
     }
-
-    
-
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
     }
-
+    
 }

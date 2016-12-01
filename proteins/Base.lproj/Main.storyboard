@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Modelization View Controller-->
+        <!--Model-->
         <scene sceneID="tXr-a1-R10">
             <objects>
                 <viewController id="BV1-FR-VrT" customClass="ModelizationViewController" customModule="proteins" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,6 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </sceneKitView>
+                    <navigationItem key="navigationItem" title="Model" id="dhu-dl-63i">
+                        <barButtonItem key="rightBarButtonItem" title="Share" id="1eR-1b-luy">
+                            <connections>
+                                <action selector="buttonShare:" destination="BV1-FR-VrT" id="FBb-gt-5nH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
