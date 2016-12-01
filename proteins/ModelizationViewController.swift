@@ -29,25 +29,13 @@ class ModelizationViewController: UIViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
-    
         setupView()
         setupScene()
-        //let text = "mon text"
-        /*let newText = SCNText(string: text, extrusionDepth:0.1)
-        newText.font = UIFont (name: "Arial", size: 3)
-        newText.firstMaterial!.diffuse.contents = UIColor.white
-        newText.firstMaterial!.specular.contents = UIColor.white*/
-        
         for (_, at) in atoms {
             displayAtom(at)
             getMinMax(at)
         }
-        
         setupCamera()
-       /* let textNode = SCNNode(geometry: newText)
-        //textNode.constraints = SCNLookAtConstraint
-        textNode.position = SCNVector3(x:xminmax!.0, y:yminmax!.1, z: zminmax!.1+10)
-        scnScene.rootNode.addChildNode(textNode)*/
         for (_,co) in conects {
             displayConect(co)
             return //a enlever
@@ -66,7 +54,7 @@ class ModelizationViewController: UIViewController {
     
     func setupView() {
         scnView = self.view as! SCNView
-        scnView.showsStatistics = true
+        scnView.showsStatistics = false
         scnView.allowsCameraControl = true
         scnView.autoenablesDefaultLighting = true
     }
@@ -138,12 +126,10 @@ class ModelizationViewController: UIViewController {
             let newText = SCNText(string: elm, extrusionDepth:0.03)
             newText.font = UIFont (name: "Arial", size: 0.7)
             newText.firstMaterial!.diffuse.contents = node.geometry!.materials.first?.diffuse.contents
-                
-            print ("Touch "+elm)
+   
             textNode = SCNNode(geometry: newText)
             let contraint = SCNBillboardConstraint()
             textNode!.constraints = [contraint]
-            //textNode.constraints = SCNLookAtConstraint
             textNode!.position = SCNVector3(x:node.position.x - 0.15, y:node.position.y - 0.15, z: node.position.z - 0.15)
             
             scnScene.rootNode.addChildNode(textNode!)
@@ -151,16 +137,7 @@ class ModelizationViewController: UIViewController {
         }
     }
     
-   /* @IBAction func displayElem(sender: UITapGestureRecognizer) {
-        print("pop")
-        let location :CGPoint = sender.location(in: scnView)
-        let hitResults = scnView.hitTest(location, options: nil)
-        if hitResults.count > 0 {
-            let result = hitResults.first!
-            handleTouch(node: result.node)
-        }
-    }*/
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
        //On prend le premier touch
         let touch = touches.first!
@@ -168,7 +145,6 @@ class ModelizationViewController: UIViewController {
         let location = touch.location(in: scnView)
         //On test un rayon qui part de l'endroit touché par le user ça nous renvoie un SCNHitTestResult
         let hitResults = scnView.hitTest(location, options: nil)
-
         //Si il y a bien un node de touché on l'envoie a handleTouch
         if hitResults.count > 0 {
             let result = hitResults.first!
