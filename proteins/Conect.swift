@@ -11,6 +11,7 @@ import Foundation
 class ConectData {
     let mainAtomKey:Int
     let conections:[Int]
+   
     
     init?(main:String, connects:[String]){
         if let m = Int(main){

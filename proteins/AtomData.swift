@@ -20,6 +20,7 @@ class AtomData: CustomStringConvertible {
             node?.name = elm
         }
     }
+    var checkConnect = false
     
     
     var description: String {
