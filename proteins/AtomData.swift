@@ -11,6 +11,7 @@ import SceneKit
 
 
 class AtomData: CustomStringConvertible {
+    static var all = [Int : AtomData]()
     let key:Int
     let pos :SCNVector3
     let color:UIColor
@@ -22,6 +23,9 @@ class AtomData: CustomStringConvertible {
     }
     var checkConnect = false
     
+    static var xminmax:(Float, Float)? = nil
+    static var yminmax:(Float, Float)? = nil
+    static var zminmax:(Float, Float)? = nil
     
     var description: String {
         get {
@@ -43,6 +47,49 @@ class AtomData: CustomStringConvertible {
             if let _ = Float(py){ print("y ok")}
             if let _ = Float(pz){ print("z ok")}
             return nil
+        }
+    }
+    
+    func displayAtom(_ scene:SCNScene) {
+        var geometry:SCNGeometry
+        geometry = SCNSphere(radius: 0.4)
+        geometry.materials.first?.diffuse.contents = color
+        node = SCNNode(geometry: geometry)
+        node!.position = pos
+        scene.rootNode.addChildNode(node!)
+        setMinMax()
+    }
+    
+    func setMinMax() {
+        let px = pos.x
+        let py = pos.y
+        let pz = pos.z
+        
+        if AtomData.xminmax == nil && AtomData.yminmax == nil && AtomData.zminmax == nil {
+            AtomData.xminmax = (px, px)
+            AtomData.yminmax = (py, py)
+            AtomData.zminmax = (pz, pz)
+        }
+        else{
+            if px < AtomData.xminmax!.0{
+                AtomData.xminmax!.0 = px
+            }
+            else if px > AtomData.xminmax!.1{
+                AtomData.xminmax!.1 = px
+            }
+            if py < AtomData.yminmax!.0{
+                AtomData.yminmax!.0 = py
+            }
+            else if py > AtomData.yminmax!.1{
+                AtomData.yminmax!.1 = py
+            }
+            if pz < AtomData.zminmax!.0{
+                AtomData.zminmax!.0 = pz
+            }
+            else if pz > AtomData.zminmax!.1{
+                AtomData.zminmax!.1 = pz
+            }
+            
         }
     }
 }

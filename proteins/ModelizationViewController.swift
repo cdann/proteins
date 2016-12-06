@@ -9,21 +9,12 @@
 import UIKit
 import QuartzCore
 import SceneKit
-import SpriteKit
 
 class ModelizationViewController: UIViewController {
     
     var scnView: SCNView!
     var scnScene: SCNScene!
     var cameraNode: SCNNode!
-    var myLabel:SKLabelNode!
-    
-    var xminmax:(Float, Float)? = nil
-    var yminmax:(Float, Float)? = nil
-    var zminmax:(Float, Float)? = nil
-    
-    var atoms = [Int : AtomData]()
-    var conects = [Int: ConectData]()
     var textNode:SCNNode?
 
     
@@ -35,9 +26,8 @@ class ModelizationViewController: UIViewController {
         {
             let activityVC = UIActivityViewController(activityItems: [img], applicationActivities: [UIActivity.init()])
             UIGraphicsEndImageContext()
-            activityVC.excludedActivityTypes = [UIActivityType.saveToCameraRoll, UIActivityType.addToReadingList, UIActivityType.assignToContact]
+            activityVC.excludedActivityTypes = [ UIActivityType.addToReadingList]
             self.present(activityVC, animated: true, completion: nil)
-            
         }
         
     }
@@ -46,32 +36,19 @@ class ModelizationViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupScene()
-        for (_, at) in atoms {
-            displayAtom(at)
-            getMinMax(at)
+        for (_, at) in AtomData.all {
+            at.displayAtom(scnScene)
         }
         setupCamera()
-
-        for (_,co) in conects {
-            displayConect(co)
+        for (_,co) in ConectData.all {
+            co.displayConect(scnScene)
         }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        scnScene.rootNode.enumerateChildNodes(){ (node, stop) -> Void in
-            node.removeFromParentNode()
-        }
-        atoms.removeAll()
-        conects.removeAll()
+        AtomData.all.removeAll()
+        ConectData.all.removeAll()
         super.viewDidDisappear(animated)
-    }
-    
-    override var shouldAutorotate : Bool {
-        return true
-    }
-    
-    override var prefersStatusBarHidden : Bool {
-        return true
     }
     
     //MARK: setup fct
@@ -89,55 +66,13 @@ class ModelizationViewController: UIViewController {
     }
     
     func setupCamera() {
-        let xmid = (xminmax!.1 - xminmax!.0)/2 + xminmax!.0
-        let ymid = (yminmax!.1 - yminmax!.0)/2 + yminmax!.0
-        let zmid = (zminmax!.1 - zminmax!.0)/2 + zminmax!.0
+        let xmid = (AtomData.xminmax!.1 - AtomData.xminmax!.0)/2 + AtomData.xminmax!.0
+        let ymid = (AtomData.yminmax!.1 - AtomData.yminmax!.0)/2 + AtomData.yminmax!.0
+        let zmid = (AtomData.zminmax!.1 - AtomData.zminmax!.0)/2 + AtomData.zminmax!.0
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
         cameraNode.position = SCNVector3(x: xmid, y: ymid, z: zmid + 50)
         scnScene.rootNode.addChildNode(cameraNode)
-    }
-    
-    func displayAtom(_ atom:AtomData) {
-        var geometry:SCNGeometry
-        geometry = SCNSphere(radius: 0.4)
-        geometry.materials.first?.diffuse.contents = atom.color
-        atom.node = SCNNode(geometry: geometry)
-        atom.node!.position = atom.pos
-        scnScene.rootNode.addChildNode(atom.node!)
-    }
-    
-    func getMinMax(_ atom:AtomData) {
-        let px = atom.pos.x
-        let py = atom.pos.y
-        let pz = atom.pos.z
-        
-        if xminmax == nil && yminmax == nil && zminmax == nil {
-            xminmax = (px, px)
-            yminmax = (py, py)
-            zminmax = (pz, pz)
-        }
-        else{
-            if px < xminmax!.0{
-                xminmax!.0 = px
-            }
-            else if px > xminmax!.1{
-                xminmax!.1 = px
-            }
-            if py < yminmax!.0{
-                yminmax!.0 = py
-            }
-            else if py > yminmax!.1{
-                yminmax!.1 = py
-            }
-            if pz < zminmax!.0{
-                zminmax!.0 = pz
-            }
-            else if pz > zminmax!.1{
-                zminmax!.1 = pz
-            }
-            
-        }
     }
     
     
@@ -176,53 +111,6 @@ class ModelizationViewController: UIViewController {
         }
     }
     
-
-    func displayConect(_ conect:ConectData) {
-        let src = atoms[conect.mainAtomKey]!.pos
-        let color = atoms[conect.mainAtomKey]!.color
-        let radius:CGFloat = 0.2
-        for conection in conect.conections {
-            if atoms[conection]!.checkConnect == false {
-                let dest = atoms[conection]!.pos
-                let diff = SCNVector3(x: src.x-dest.x, y: src.y-dest.y, z: src.z-dest.z)
-                let height = diff.lenght()
-                let geometry = SCNCylinder(radius: radius, height: CGFloat(height))
-                geometry.materials.first?.diffuse.contents = color
-                let node = SCNNode(geometry: geometry)
-                node.position = SCNVector3((dest.x + src.x)/2, (dest.y + src.y)/2 , (dest.z + src.z)/2)
-                node.eulerAngles = getEuler(diff: diff, height: Double(height))
-                scnScene.rootNode.addChildNode(node)
-            }
-        }
-        atoms[conect.mainAtomKey]!.checkConnect = true
-    }
-    
-    func getEuler(diff:SCNVector3, height:Double) -> SCNVector3 {
-        let xzdiff = pow((pow(Double(diff.x), 2) + pow(Double(diff.z),2)),0.5)
-        var pitch: Double
-        if diff.y < 0 {
-            pitch = M_PI - asin(Double(xzdiff)/height)
-        } else {
-            pitch = asin(Double(xzdiff)/height)
-        }
-        if diff.z != 0 {
-            pitch = sign(Double(diff.z)) * pitch
-        }
-        var yaw: Double
-        if diff.x == 0 && diff.z == 0 {
-            yaw = 0
-        } else {
-            let inner = Double(diff.x) / (height * sin (pitch))
-            if inner > 1 {
-                yaw = M_PI_2
-            } else if inner < -1 {
-                yaw = M_PI_2
-            } else {
-                yaw = asin(inner)
-            }
-        }
-        return SCNVector3(CGFloat(pitch), CGFloat(yaw), 0)
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

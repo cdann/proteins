@@ -13,7 +13,6 @@
 		01D288EF1DEF2D0500F4C579 /* AuthentificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D288EE1DEF2D0500F4C579 /* AuthentificationManager.swift */; };
 		01D288F31DEF2DCE00F4C579 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D288F21DEF2DCE00F4C579 /* LoginViewController.swift */; };
 		01D288F51DEF2E4100F4C579 /* tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D288F41DEF2E4100F4C579 /* tools.swift */; };
-		01D288F71DEF3BF500F4C579 /* ShareModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D288F61DEF3BF500F4C579 /* ShareModel.swift */; };
 		8FBED2511DC206D60040026F /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBED2501DC206D60040026F /* extensions.swift */; };
 		8FBED2531DC2085B0040026F /* Conect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBED2521DC2085B0040026F /* Conect.swift */; };
 		8FBED2551DC230B70040026F /* ATP_ideal.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8FBED2541DC230B70040026F /* ATP_ideal.txt */; };
@@ -34,7 +33,6 @@
 		01D288EE1DEF2D0500F4C579 /* AuthentificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthentificationManager.swift; path = UserControl/AuthentificationManager.swift; sourceTree = "<group>"; };
 		01D288F21DEF2DCE00F4C579 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		01D288F41DEF2E4100F4C579 /* tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tools.swift; sourceTree = "<group>"; };
-		01D288F61DEF3BF500F4C579 /* ShareModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareModel.swift; sourceTree = "<group>"; };
 		8FBED2501DC206D60040026F /* extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		8FBED2521DC2085B0040026F /* Conect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conect.swift; sourceTree = "<group>"; };
 		8FBED2541DC230B70040026F /* ATP_ideal.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ATP_ideal.txt; sourceTree = "<group>"; };
@@ -104,7 +102,6 @@
 				01D288F41DEF2E4100F4C579 /* tools.swift */,
 				8FBED2501DC206D60040026F /* extensions.swift */,
 				01D288EE1DEF2D0500F4C579 /* AuthentificationManager.swift */,
-				01D288F61DEF3BF500F4C579 /* ShareModel.swift */,
 				8FD946751DBFAE0E0074DC26 /* ligandsTableViewController.swift */,
 				8FD9466A1DBFAD620074DC26 /* LaunchScreen.storyboard */,
 				8FD9466D1DBFAD620074DC26 /* Info.plist */,
@@ -191,7 +188,6 @@
 				8FBED2511DC206D60040026F /* extensions.swift in Sources */,
 				8FBED2531DC2085B0040026F /* Conect.swift in Sources */,
 				8FD946641DBFAD620074DC26 /* ModelizationViewController.swift in Sources */,
-				01D288F71DEF3BF500F4C579 /* ShareModel.swift in Sources */,
 				8FE9C86B1DC0D12D00D44199 /* AtomData.swift in Sources */,
 				01D288F31DEF2DCE00F4C579 /* LoginViewController.swift in Sources */,
 				8FD946761DBFAE0E0074DC26 /* ligandsTableViewController.swift in Sources */,

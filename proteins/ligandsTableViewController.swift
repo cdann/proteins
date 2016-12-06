@@ -12,8 +12,6 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
 
     var ligand_list: [String]?
     var ligand_list_filter = [String]()
-    var atoms = [Int: AtomData]()
-    var conects = [Int: ConectData]()
     let searchController = UISearchController(searchResultsController: nil)
     
     func arrayFromContentsOfFileWithName(_ fileName: String) -> [String]? {
@@ -33,7 +31,6 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     func testForeground() {
-        print("testForeGround")
         performSegue(withIdentifier: "goback", sender: nil)
         AuthentificationManager.sharedInstance.needsAuthentication = true
         if (AuthentificationManager.sharedInstance.needsAuthentication) {
@@ -54,12 +51,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        print("*")
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+
     }
     
     func searchFilterLigand(_ searchText: String, scope: String = "All") {
@@ -117,7 +109,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
                 print("error in atom construction")
                 return false
             }
-            atoms[a.key] = a
+            AtomData.all[a.key] = a
             return true
         }
         else if words[0] == "CONECT" {
@@ -128,7 +120,7 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
                 print("error in atom construction")
                 return false
             }
-            conects[c.mainAtomKey] = c
+            ConectData.all[c.mainAtomKey] = c
             return true
         }
         return false
@@ -169,15 +161,6 @@ class ligandsTableViewController: UITableViewController, UISearchResultsUpdating
                     self.present(alertController, animated: true, completion: nil)
                 }
             }
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let ctrl = segue.destination as? ModelizationViewController {
-            ctrl.atoms = self.atoms
-            ctrl.conects = self.conects
-            atoms.removeAll()
-            conects.removeAll()
         }
     }
     
