@@ -45,10 +45,13 @@ class ModelizationViewController: UIViewController {
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         AtomData.all.removeAll()
         ConectData.all.removeAll()
-        super.viewDidDisappear(animated)
+        scnScene.rootNode.enumerateChildNodes{ (node, stop) -> Void in
+            node.removeFromParentNode()
+        }
+        super.viewWillDisappear(animated)
     }
     
     //MARK: setup fct
